@@ -27,7 +27,7 @@ def drawCube(img, corners, imgpts):
     return img
 
 # Load previously saved data
-with np.load('data/Data.npz') as X:
+with np.load('calib/data/Data.npz') as X:
     mtx, dist, _, _ = [X[i] for i in ('arr_0', 'arr_1', 'arr_2', 'arr_3')]
 
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
@@ -39,7 +39,7 @@ axis = np.float32([[3, 0, 0], [0, 3, 0], [0, 0, -3]]).reshape(-1, 3) * 20
 axis2 = np.float32([[0, 0, 0], [0, 3, 0], [3, 3, 0], [3, 0, 0], [
                    0, 0, -3], [0, 3, -3], [3, 3, -3], [3, 0, -3]]) * 20
 
-for fname in glob.glob('img/Snap*.jpg'):
+for fname in glob.glob('calib/img/Snap*.jpg'):
     img = cv2.imread(fname)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     ret, corners = cv2.findChessboardCorners(gray, (7, 7), None)

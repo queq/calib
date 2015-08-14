@@ -15,4 +15,4 @@ L(5) = Link([0  0  0  pi/2]);
 L(6) = Link([0 d6  0  pi/2]);
 
 irb_140 = SerialLink(L, 'name', 'IRB140');
-
+irb_140.teach()

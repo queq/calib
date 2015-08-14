@@ -4,6 +4,13 @@ import cv2
 
 
 def draw(img, corners, imgpts):
+    corner = tuple(corners[0].ravel())
+    img = cv2.line(img, corner, tuple(imgpts[0].ravel()), (255, 0, 0), 5)
+    img = cv2.line(img, corner, tuple(imgpts[1].ravel()), (0, 255, 0), 5)
+    img = cv2.line(img, corner, tuple(imgpts[2].ravel()), (0, 0, 255), 5)
+    return img
+
+def drawCube(img, corners, imgpts):
     imgpts = np.int32(imgpts).reshape(-1, 2)
 
     # draw ground floor in green
@@ -21,22 +28,25 @@ def draw(img, corners, imgpts):
 # Load previously saved data
 with np.load('data/Data2.npz') as X:
     mtx, dist, _, _ = [X[i] for i in ('arr_0', 'arr_1', 'arr_2', 'arr_3')]
+    # print mtx, dist
 
 # termination criteria
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
 # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
 objp = np.zeros((7 * 7, 3), np.float32)
-objp[:, :2] = np.mgrid[0:7, 0:7].T.reshape(-1, 2) * 20
+objp[:, :2] = np.mgrid[0:7, 0:7].T.reshape(-1, 2) * 30
 
-axis = np.float32([[0, 0, 0], [0, 3, 0], [3, 3, 0], [3, 0, 0], [
-                  0, 0, -3], [0, 3, -3], [3, 3, -3], [3, 0, -3]]) * 20
+axis = np.float32([[3, 0, 0], [0, 3, 0], [0, 0, -3]]).reshape(-1, 3) * 20
+
+# axis = np.float32([[0, 0, 0], [0, 3, 0], [3, 3, 0], [3, 0, 0], [
+#                   0, 0, -3], [0, 3, -3], [3, 3, -3], [3, 0, -3]]) * 30
 
 # Arrays to store object points and image points from all the images.
 objpoints = []  # 3d point in real world space
 imgpoints = []  # 2d points in image plane.
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1) # Numero de dispositivo
 
 while(True):
     # Capture frame-by-frame
